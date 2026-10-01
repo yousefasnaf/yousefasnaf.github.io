@@ -1,1 +1,52 @@
-wait a sec
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+</head>
+
+<body>
+
+<script>
+async function runHTML() {
+    try {
+        // Load the encoded TXT file
+        const response = await fetch("soccer.txt");
+
+        if (!response.ok) {
+            throw new Error("Could not find Pasted text(3).txt");
+        }
+
+        const encodedHTML = await response.text();
+
+        // Decode HTML entities like:
+        // &#60;  -> <
+        // &#104; -> h
+        // &#116; -> t
+        // &#109; -> m
+        // &#108; -> l
+        // &#62;  -> >
+        const decoder = document.createElement("textarea");
+        decoder.innerHTML = encodedHTML;
+
+        const decodedHTML = decoder.value;
+
+        // Replace this page with the decoded HTML
+        document.open();
+        document.write(decodedHTML);
+        document.close();
+
+    } catch (error) {
+        document.body.innerHTML = `
+            <h1>Could not run the file</h1>
+            <p>${error.message}</p>
+            <p>Make sure Pasted text(3).txt is in the same folder as run.html.</p>
+        `;
+    }
+}
+
+runHTML();
+</script>
+
+</body>
+</html>
