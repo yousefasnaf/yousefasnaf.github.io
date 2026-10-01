@@ -1,0 +1,907 @@
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+    overflow-x:hidden;
+
+    background:#111;
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display:flex;
+    flex-direction:column;
+    padding-bottom: 90px;
+}
+
+
+
+/* BACKGROUND BUTTON */
+
+
+.background-btn{
+
+    position:fixed;
+
+    top:15px;
+
+    right:15px;
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.5);
+
+    background:rgba(255,255,255,.75);
+
+    cursor:pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:.2s;
+
+    z-index:20;
+
+}
+
+
+.background-btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+.background-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #111;
+}
+
+
+
+/* BACKGROUND MODAL */
+
+.bg-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.bg-modal.show {
+    display: flex;
+}
+
+.bg-modal-content {
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    width: 420px;
+    max-width: 90%;
+    text-align: center;
+    color: white;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.bg-modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.bg-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bg-option-card {
+    height: 90px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.bg-option-card:hover {
+    transform: scale(1.03);
+    border-color: white;
+}
+
+.upload-custom-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #5986da;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upload-custom-btn:hover {
+    background: #79aadb;
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.close-modal-btn:hover {
+    color: white;
+}
+
+
+
+/* MAIN */
+
+
+.main{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width: 100%;
+
+}
+
+.home-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+/* TITLE */
+
+
+.logo {
+  font-size: 75px;
+  font-weight: 800;
+  letter-spacing: -5px;
+  margin-bottom: 5px;
+  color: white;
+  text-shadow: 0 3px 20px black;
+  display: flex;
+  align-items: baseline;
+}
+
+/* Custom SVG Jack-o'-lantern Integration */
+.svg-jack {
+    display: inline-block;
+
+    width: 62px;
+    height: 62px;
+    margin: 0 2px;
+
+    align-self: center;
+    transform: translateY(8px);
+
+    background-image: url("wallpapers/halloween.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    filter: drop-shadow(0 3px 20px black);
+}
+
+
+
+
+
+.website-title{
+
+    font-size:28px;
+
+    color:white;
+
+    margin-bottom:35px;
+
+    text-shadow:0 3px 15px black;
+
+}
+
+
+
+
+/* SEARCH */
+
+
+.search{
+
+    width:620px;
+
+    max-width:90%;
+
+    height:60px;
+
+    border-radius:35px;
+
+    border:1px solid rgba(255,255,255,.5);
+
+    background:rgba(255,255,255,.85);
+
+    padding:0 25px;
+
+    font-size:20px;
+
+    outline:none;
+
+}
+
+
+
+
+
+/* BUTTON AREA */
+
+
+.social-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+
+
+/* TWITTER STYLE BUTTON */
+
+
+.social-btn {
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    border:1px solid rgba(255,255,255,.5);
+
+    border-radius:12px;
+
+
+    color:#000;
+
+    cursor:pointer;
+
+
+    font-size:22px;
+
+
+    padding:14px 25px;
+
+
+    background:rgba(255,255,255,.85);
+
+
+    backdrop-filter:blur(10px);
+
+
+    text-decoration:none;
+
+
+    transition:transform 75ms ease-in-out;
+
+
+}
+
+
+
+.social-btn:hover {
+
+
+    box-shadow:3px 3px 5px rgba(0,0,0,.2);
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+.social-btn-icon{
+
+    height:28px;
+
+    margin-right:10px;
+
+}
+
+
+
+
+.arrow{
+
+    margin-left:10px;
+
+    transition:.3s;
+
+}
+
+
+
+.active .arrow{
+
+    transform:rotate(180deg);
+
+}
+
+
+
+
+
+/* DROP AREA */
+
+
+.dropdown-area{
+
+
+    width:950px;
+
+    max-width:92%;
+
+
+    margin-top:35px;
+
+
+    display:none;
+
+
+    justify-content:center;
+
+
+    gap:20px;
+
+
+    flex-wrap:wrap;
+
+
+    padding:25px;
+
+
+
+    background:rgba(255,255,255,.15);
+
+
+    backdrop-filter:blur(20px);
+
+
+    border-radius:25px;
+
+
+    border:1px solid rgba(255,255,255,.3);
+
+
+}
+
+
+
+.dropdown-area.show{
+
+    display:flex;
+
+}
+
+
+
+/* BIG SQUARE BUTTONS */
+
+
+.square{
+
+
+    width:120px;
+
+    height:120px;
+
+
+    border-radius:18px;
+
+
+    background:rgba(255,255,255,.75);
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    color:black;
+
+
+    font-size:20px;
+
+    cursor:pointer;
+
+
+    transition:.2s;
+
+
+}
+
+
+.square:hover{
+
+
+    transform:scale(1.08);
+
+    background:white;
+
+
+}
+
+
+
+
+
+/* VIEW ALL BUTTON */
+
+
+.view-all{
+
+
+    width:320px;
+
+    height:55px;
+
+    border-radius:15px;
+
+    background:rgba(0,0,0,.75);
+
+
+    color:white;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:20px;
+
+
+}
+
+
+
+
+
+
+/* TWITTER EXTRA BUTTON */
+
+
+.twitter-btn{
+
+
+    margin-top:20px;
+
+    width:320px;
+
+}
+
+.twitter-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:20px;
+
+}
+
+
+.twitter-btn{
+
+    width:320px;
+
+    margin-bottom:120px;
+
+}
+
+/* UGS Specific Styles inside Games Dropdown */
+#games.dropdown-area {
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    max-height: 80vh;
+    overflow: hidden;
+    padding: 20px 20px 20px 95px;
+}
+
+#games::-webkit-scrollbar {
+    width: 6px;
+}
+
+#games::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+}
+
+#games::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+.ugs-sidebar {
+    position: absolute;
+    left: 12px;
+    top: 20px;
+    width: 65px;
+    height: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    border-radius: 14px;
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.ugs-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.ugs-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+}
+
+.ugs-sidebar-btn {
+    background: rgba(89, 134, 218, 0.85);
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    text-align: center;
+    min-height: 35px;
+    flex-shrink: 0;
+}
+
+.ugs-sidebar-btn:hover {
+    background: #79aadb;
+    transform: scale(1.08);
+}
+
+.ugs-main-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.ugs-main-content::-webkit-scrollbar {
+    width: 6px;
+}
+.ugs-main-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+.ugs-letter-header {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.ugs-buttons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.ugs-btn {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transition: all 0.2s ease;
+    color: #111;
+    text-align: left;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+}
+
+.ugs-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    background: #ffffff;
+    color: #0056b3;
+}
+
+
+/* BROWSER IFRAME CONTAINER STYLES */
+.frame-view {
+    width: 98%;            /* Changed from 95% */
+    max-width: 1400px;     /* Increased from 1100px */
+    height: 88vh;          /* Increased height from 75vh */
+    display: flex;
+    flex-direction: column;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    margin-top: 10px;
+}
+
+.browser-top-bar {
+    height: 52px;
+    background: rgba(35, 35, 35, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.home-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.04);
+}
+
+.home-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+}
+
+.url-bar {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #4da6ff;
+    padding: 7px 16px;
+    font-size: 14px;
+    font-family: monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+}
+
+.app-iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #ffffff;
+}
+
+
+/* FLOATING BOTTOM DOCK BAR */
+
+.bottom-dock {
+    position: relative;
+    margin: 15px auto 20px auto;
+    background: #000000;
+    padding: 10px 28px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: max-content;
+}
+
+.dock-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.dock-item:hover {
+    transform: scale(1.18) translateY(-2px);
+}
+
+.dock-icon {
+    width: 30px;
+    height: 30px;
+}
+.about-section {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.about-card {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    backdrop-filter: blur(15px);
+    transition: 0.3s;
+}
+
+.about-card:hover {
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-3px);
+}
+
+.about-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.about-section .highlight {
+    color: #79aadb;
+    font-weight: bold;
+}
+
+.about-label {
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+    .about-card {
+        padding: 20px;
+    }
+
+    .about-section h2 {
+        font-size: 23px;
+    }
+
+    .about-section p {
+        font-size: 15px;
+    }
+}
+```css
+/* Games tab buttons */
+#searchBtn,
+#lolbutton {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#searchBtn {
+    background: #5986da;
+}
+
+#lolbutton {
+    background: #79aadb;
+}
+
+#searchBtn:hover,
+#lolbutton:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+#searchBtn:active,
+#lolbutton:active {
+    transform: translateY(0);
+}
+#sections-container button,
+#sections-container .game-button,
+#sections-container .game-card,
+#sections-container a {
+    width: auto !important;
+    max-width: 200px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+}
+#sections-container input[type="button"] {
+    width: auto !important;
+    height: auto !important;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
