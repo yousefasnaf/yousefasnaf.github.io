@@ -1,1 +1,1423 @@
-wait a sec
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>josephasn.com</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+    overflow-x:hidden;
+
+    background:#111;
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display:flex;
+    flex-direction:column;
+    padding-bottom: 90px;
+}
+
+
+
+/* BACKGROUND BUTTON */
+
+
+.background-btn{
+
+    position:fixed;
+
+    top:15px;
+
+    right:15px;
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.5);
+
+    background:rgba(255,255,255,.75);
+
+    cursor:pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:.2s;
+
+    z-index:20;
+
+}
+
+
+.background-btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+.background-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #111;
+}
+
+
+
+/* BACKGROUND MODAL */
+
+.bg-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.bg-modal.show {
+    display: flex;
+}
+
+.bg-modal-content {
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    width: 420px;
+    max-width: 90%;
+    text-align: center;
+    color: white;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.bg-modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.bg-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.bg-option-card {
+    height: 90px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.bg-option-card:hover {
+    transform: scale(1.03);
+    border-color: white;
+}
+
+.upload-custom-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #5986da;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upload-custom-btn:hover {
+    background: #79aadb;
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.close-modal-btn:hover {
+    color: white;
+}
+
+
+
+/* MAIN */
+
+
+.main{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width: 100%;
+
+}
+
+.home-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+/* TITLE */
+
+
+.logo {
+  font-size: 75px;
+  font-weight: 800;
+  letter-spacing: -5px;
+  margin-bottom: 5px;
+  color: white;
+  text-shadow: 0 3px 20px black;
+  display: flex;
+  align-items: baseline;
+}
+
+/* Custom SVG Jack-o'-lantern Integration */
+.svg-jack {
+    display: inline-block;
+
+    width: 62px;
+    height: 62px;
+    margin: 0 2px;
+
+    align-self: center;
+    transform: translateY(8px);
+
+    background-image: url("wallpapers/halloween.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    filter: drop-shadow(0 3px 20px black);
+}
+
+
+
+
+
+.website-title{
+
+    font-size:28px;
+
+    color:white;
+
+    margin-bottom:35px;
+
+    text-shadow:0 3px 15px black;
+
+}
+
+
+
+
+/* SEARCH */
+
+
+.search{
+
+    width:620px;
+
+    max-width:90%;
+
+    height:60px;
+
+    border-radius:35px;
+
+    border:1px solid rgba(255,255,255,.5);
+
+    background:rgba(255,255,255,.85);
+
+    padding:0 25px;
+
+    font-size:20px;
+
+    outline:none;
+
+}
+
+
+
+
+
+/* BUTTON AREA */
+
+
+.social-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+
+
+/* TWITTER STYLE BUTTON */
+
+
+.social-btn {
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    border:1px solid rgba(255,255,255,.5);
+
+    border-radius:12px;
+
+
+    color:#000;
+
+    cursor:pointer;
+
+
+    font-size:22px;
+
+
+    padding:14px 25px;
+
+
+    background:rgba(255,255,255,.85);
+
+
+    backdrop-filter:blur(10px);
+
+
+    text-decoration:none;
+
+
+    transition:transform 75ms ease-in-out;
+
+
+}
+
+
+
+.social-btn:hover {
+
+
+    box-shadow:3px 3px 5px rgba(0,0,0,.2);
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+.social-btn-icon{
+
+    height:28px;
+
+    margin-right:10px;
+
+}
+
+
+
+
+.arrow{
+
+    margin-left:10px;
+
+    transition:.3s;
+
+}
+
+
+
+.active .arrow{
+
+    transform:rotate(180deg);
+
+}
+
+
+
+
+
+/* DROP AREA */
+
+
+.dropdown-area{
+
+
+    width:950px;
+
+    max-width:92%;
+
+
+    margin-top:35px;
+
+
+    display:none;
+
+
+    justify-content:center;
+
+
+    gap:20px;
+
+
+    flex-wrap:wrap;
+
+
+    padding:25px;
+
+
+
+    background:rgba(255,255,255,.15);
+
+
+    backdrop-filter:blur(20px);
+
+
+    border-radius:25px;
+
+
+    border:1px solid rgba(255,255,255,.3);
+
+
+}
+
+
+
+.dropdown-area.show{
+
+    display:flex;
+
+}
+
+
+
+/* BIG SQUARE BUTTONS */
+
+
+.square{
+
+
+    width:120px;
+
+    height:120px;
+
+
+    border-radius:18px;
+
+
+    background:rgba(255,255,255,.75);
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    color:black;
+
+
+    font-size:20px;
+
+    cursor:pointer;
+
+
+    transition:.2s;
+
+
+}
+
+
+.square:hover{
+
+
+    transform:scale(1.08);
+
+    background:white;
+
+
+}
+
+
+
+
+
+/* VIEW ALL BUTTON */
+
+
+.view-all{
+
+
+    width:320px;
+
+    height:55px;
+
+    border-radius:15px;
+
+    background:rgba(0,0,0,.75);
+
+
+    color:white;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:20px;
+
+
+}
+
+
+
+
+
+
+/* TWITTER EXTRA BUTTON */
+
+
+.twitter-btn{
+
+
+    margin-top:20px;
+
+    width:320px;
+
+}
+
+.twitter-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:20px;
+
+}
+
+
+.twitter-btn{
+
+    width:320px;
+
+    margin-bottom:120px;
+
+}
+
+/* UGS Specific Styles inside Games Dropdown */
+#games.dropdown-area {
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    max-height: 80vh;
+    overflow: hidden;
+    padding: 20px 20px 20px 95px;
+}
+
+#games::-webkit-scrollbar {
+    width: 6px;
+}
+
+#games::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+}
+
+#games::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+.ugs-sidebar {
+    position: absolute;
+    left: 12px;
+    top: 20px;
+    width: 65px;
+    height: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    border-radius: 14px;
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.ugs-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.ugs-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+}
+
+.ugs-sidebar-btn {
+    background: rgba(89, 134, 218, 0.85);
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    text-align: center;
+    min-height: 35px;
+    flex-shrink: 0;
+}
+
+.ugs-sidebar-btn:hover {
+    background: #79aadb;
+    transform: scale(1.08);
+}
+
+.ugs-main-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.ugs-main-content::-webkit-scrollbar {
+    width: 6px;
+}
+.ugs-main-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+.ugs-letter-header {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.ugs-buttons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.ugs-btn {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transition: all 0.2s ease;
+    color: #111;
+    text-align: left;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+}
+
+.ugs-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    background: #ffffff;
+    color: #0056b3;
+}
+
+
+/* BROWSER IFRAME CONTAINER STYLES */
+.frame-view {
+    width: 98%;            /* Changed from 95% */
+    max-width: 1400px;     /* Increased from 1100px */
+    height: 88vh;          /* Increased height from 75vh */
+    display: flex;
+    flex-direction: column;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    margin-top: 10px;
+}
+
+.browser-top-bar {
+    height: 52px;
+    background: rgba(35, 35, 35, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.home-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.04);
+}
+
+.home-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+}
+
+.url-bar {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #4da6ff;
+    padding: 7px 16px;
+    font-size: 14px;
+    font-family: monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+}
+
+.app-iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #ffffff;
+}
+
+
+/* FLOATING BOTTOM DOCK BAR */
+
+.bottom-dock {
+    position: relative;
+    margin: 15px auto 20px auto;
+    background: #000000;
+    padding: 10px 28px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: max-content;
+}
+
+.dock-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.dock-item:hover {
+    transform: scale(1.18) translateY(-2px);
+}
+
+.dock-icon {
+    width: 30px;
+    height: 30px;
+}
+.about-section {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.about-card {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    backdrop-filter: blur(15px);
+    transition: 0.3s;
+}
+
+.about-card:hover {
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-3px);
+}
+
+.about-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-section p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.about-section .highlight {
+    color: #79aadb;
+    font-weight: bold;
+}
+
+.about-label {
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+    .about-card {
+        padding: 20px;
+    }
+
+    .about-section h2 {
+        font-size: 23px;
+    }
+
+    .about-section p {
+        font-size: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<button class="background-btn" onclick="openBgModal()">
+    <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <path fill="none" d="M0 0h24v24H0z"/>
+            <path d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"/>
+        </g>
+    </svg>
+</button>
+
+<input type="file" id="bgPicker" accept="image/*,video/*" hidden>
+
+<!-- BACKGROUND SELECTION MODAL -->
+<div class="bg-modal" id="bgModal">
+    <div class="bg-modal-content">
+        <h3>Choose Background</h3>
+        <div class="bg-options-grid">
+            <div class="bg-option-card" style="background-image: url('wallpapers/space.png')" onclick="setPresetBackground('wallpapers/space.png')">Space</div>
+            <div class="bg-option-card" style="background-image: url('wallpapers/shapes.png')" onclick="setPresetBackground('wallpapers/shapes.png')">Geometric</div>
+            <div class="bg-option-card" style="background-image: url('wallpapers/sea.png')" onclick="setPresetBackground('wallpapers/sea.png')">Sea / Nature</div>
+            <div class="bg-option-card" style="background-image: url('wallpapers/art.jpg')" onclick="setPresetBackground('wallpapers/art.jpg')">Art</div>
+        </div>
+        <button class="upload-custom-btn" onclick="triggerCustomUpload()">Upload Custom Image/Video</button>
+        <br>
+        <button class="close-modal-btn" onclick="closeBgModal()">Cancel</button>
+    </div>
+</div>
+
+
+
+<div class="main">
+
+    <!-- HOME PAGE CONTENT VIEW -->
+    <div id="homeView" class="home-view">
+        <h1>ㅤㅤㅤ</h1>
+        <h1>ㅤㅤㅤ</h1>
+        <h1>ㅤㅤㅤ</h1>
+        <div class="logo">
+          josephasn.com
+        </div>
+
+
+
+        <input
+            id="mainSearch"
+            class="search"
+            placeholder="Search josephasn.com!">
+
+        <div class="social-container">
+
+            <button class="social-btn" onclick="openMenu('games')">
+                Games <span class="arrow">▼</span>
+            </button>
+
+            <button class="social-btn" onclick="openMenu('apps')">
+                Apps <span class="arrow">▼</span>
+            </button>
+
+            <button class="social-btn" onclick="openMenu('more')">
+                More <span class="arrow">▼</span>
+            </button>
+
+        </div>
+
+
+        <!-- GAMES DROPDOWN -->
+        <div id="games" class="dropdown-area">
+            <div class="ugs-sidebar" id="sidebar"></div>
+            <div class="ugs-main-content" id="ugsMainContent">
+                <h2 style="color: white; text-align: center; margin-bottom: 15px; font-weight: normal; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                    Files from Ultimate Game Stash
+                </h2>
+                <h2 style="color: white; text-align: center; margin-bottom: 15px; font-weight: normal; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                    1,827 total games found!
+                </h2>
+                <div style="text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" placeholder="Search Games..." id="searchInput" style="padding: 10px 15px; width: 100%; max-width: 320px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.4); outline: none; background: rgba(255,255,255,0.9); font-size: 15px; color: #111;">
+                    <button id="searchBtn" onclick="performSearch()" style="padding: 10px 18px; border-radius: 10px; border: none; background: #5986da; color: white; cursor: pointer; font-weight: 600; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Search</button>
+                    <button id="lolbutton" onclick="loadAllGamesScript()" style="padding: 10px 18px; border-radius: 10px; border: none; background: #79aadb; color: white; cursor: pointer; font-weight: 600; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">Show all games</button>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/searchbut.js"></script>
+                <div id="sections-container"></div>
+            </div>
+        </div>
+
+        <!-- APPS DROPDOWN -->
+        <div id="apps" class="dropdown-area">
+            <div class="square" style="width: 120px; height: 120px; overflow: hidden; display: inline-block; border: 1px solid #ccc;">
+              <a href="apps/ty.html" target="_blank" style="display: block; width: 100%; height: 100%;">
+                <img src="https://thumbs.dreamstime.com/b/youtube-logo-white-background-editorial-illustrative-youtube-logo-white-background-editorial-illustrative-printed-white-206666099.jpg"
+                     alt="Open Local File"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+              </a>
+            </div>
+            <div class="square" style="width: 120px; height: 120px; overflow: hidden; display: inline-block; border: 1px solid #ccc;">
+              <a href="apps/scrattch.html" target="_blank" style="display: block; width: 100%; height: 100%;">
+                <img src="https://images.seeklogo.com/logo-png/43/1/scratch-logo-png_seeklogo-431722.png"
+                     alt="Open Local File"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+              </a>
+            </div>
+
+            <script>
+            function makeWholePageIframe() {
+                // Replaces the entire body content with a full-screen iframe
+                document.body.innerHTML = `
+                    <iframe src="apps/ai.html" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
+                `;
+                // Removes any default margins on the body to ensure true full-screen
+                document.body.style.margin = "0";
+                document.body.style.padding = "0";
+                document.body.style.overflow = "hidden";
+            }
+            </script>
+
+
+
+        </div>
+
+        <!-- MORE DROPDOWN -->
+        <div id="more" class="dropdown-area">
+            <a href="privacy.html" style="text-decoration: none; display: inline-block;">
+                <div class="square">Privacy Policy</div>
+            </a>
+            <div class="square">Settings</div>
+            <div class="square">Media</div>
+            <div class="square">Contact</div>
+        </div>
+
+    </div> <!-- /homeView -->
+
+
+    <!-- GOOGLE-STYLE IFRAME BROWSER VIEW -->
+    <div id="frameView" class="frame-view" style="display: none;">
+        <div class="browser-top-bar">
+            <button class="home-btn" onclick="goHome()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Home
+            </button>
+            <div class="url-bar" id="urlDisplay">https://josephasn.com/search.html</div>
+        </div>
+        <iframe id="appIframe" src="" class="app-iframe"></iframe>
+    </div>
+
+</div>
+
+
+<!-- FLOATING BOTTOM DOCK -->
+<div class="bottom-dock">
+    <!-- Discord -->
+    <a href="https://discord.com" target="_blank" class="dock-item" title="Discord">
+        <svg class="dock-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+            <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+        </svg>
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://tiktok.com" target="_blank" class="dock-item" title="TikTok">
+        <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12a4 4 0 1 0 4 4v-12a5 5 0 0 0 5 5"></path>
+        </svg>
+    </a>
+
+    <!-- Gmail -->
+    <a href="mailto:example@gmail.com" class="dock-item" title="Gmail">
+        <svg class="dock-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+            <path d="M3 7l9 6l9 -6"></path>
+        </svg>
+    </a>
+
+    <!-- Custom Colored Circles / Bubbles -->
+    <a href="#" class="dock-item" title="Bubbles">
+        <svg class="dock-icon" viewBox="0 0 40 40" fill="none">
+            <circle cx="14" cy="14" r="8" stroke="#00b4d8" stroke-width="3.5" fill="none"/>
+            <circle cx="27" cy="30" r="6" stroke="#ffee00" stroke-width="3.5" fill="none"/>
+            <circle cx="30" cy="14" r="5" fill="#a033ff"/>
+            <circle cx="21" cy="27" r="2" fill="#2ecc71"/>
+            <circle cx="10" cy="28" r="1.8" fill="#ff70a6"/>
+        </svg>
+    </a>
+</div>
+<div class="about-section">
+
+    <div class="about-card">
+        <div class="about-label">Welcome</div>
+
+        <h2>About josephasn.com</h2>
+
+        <p>
+            Hey, welcome to <span class="highlight">josephasn.com</span>!
+            I built this website for one simple reason: being bored
+            absolutely sucks.
+        </p>
+
+        <p>
+            Sometimes you just want a random corner of the internet
+            where you can play games, try out cool apps, or find
+            something fun to do. That's exactly what this site is for.
+        </p>
+
+        <p>
+            Think of it as my personal digital playground, open to
+            anyone who wants to chill, explore, and have some fun.
+        </p>
+    </div>
+
+    <div class="about-card">
+        <div class="about-label">Explore</div>
+
+        <h2>The Whole Vibe Here</h2>
+
+        <p>
+            I'm constantly building stuff, and instead of letting
+            my coding projects sit on my hard drive, I put them here.
+            I wanted a space that feels like the old-school internet:
+            simple, fun, and easy to use.
+        </p>
+
+        <p>
+            <span class="highlight">Games & Activities:</span>
+            Casual games you can jump into whenever you're bored.
+            No huge tutorials or complicated setup.
+        </p>
+
+        <p>
+            <span class="highlight">Custom Built Apps:</span>
+            App prototypes, and experiments that I'm
+            always working on.
+        </p>
+
+        <p>
+            <span class="highlight">The Chill Zone:</span>
+            A place to relax, explore, and take a break from
+            everything else online.
+        </p>
+    </div>
+
+    <div class="about-card">
+        <div class="about-label">Always Building</div>
+
+        <h2>Why I Keep Adding to It</h2>
+
+        <p>
+            This site is never really finished. Whenever I get a
+            new idea, I try to code it and add it to the website.
+            That means there's always something new to check out.
+        </p>
+
+        <p>
+            Whether you're here to play games, try an app, or just
+            waste a little time, I hope you find something you enjoy.
+        </p>
+
+        <p style="text-align:center; margin-bottom:0;">
+            <span class="highlight">
+                Thanks for visiting josephasn.com!
+            </span>
+        </p>
+    </div>
+
+</div>
+
+
+
+<script src="games.js"></script>
+<script>
+
+
+// DROPDOWN SYSTEM
+
+
+let opened = null;
+
+
+function openMenu(id){
+
+
+let box=document.getElementById(id);
+
+
+
+if(opened && opened!==box){
+
+opened.classList.remove("show");
+
+}
+
+
+
+if(box.classList.contains("show")){
+
+
+box.classList.remove("show");
+
+opened=null;
+
+
+}
+
+else{
+
+
+box.classList.add("show");
+
+opened=box;
+
+if(id === 'games') {
+    const container = document.getElementById("sections-container");
+    if (container && container.children.length === 0) {
+        loadAllGamesScript();
+    }
+}
+
+
+}
+
+
+
+}
+
+
+
+
+
+// BACKGROUND MODAL & CHANGER LOGIC
+
+
+const bgModal = document.getElementById("bgModal");
+const picker = document.getElementById("bgPicker");
+
+function openBgModal() {
+    bgModal.classList.add("show");
+}
+
+function closeBgModal() {
+    bgModal.classList.remove("show");
+}
+
+function triggerCustomUpload() {
+    closeBgModal();
+    picker.click();
+}
+
+function applyBackground(url, isVideo = false) {
+    let oldVideo = document.querySelector("video");
+    if (oldVideo) oldVideo.remove();
+
+    if (isVideo) {
+        let video = document.createElement("video");
+        video.src = url;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.style.position = "fixed";
+        video.style.top = "0";
+        video.style.left = "0";
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.objectFit = "cover";
+        video.style.zIndex = "-1";
+        document.body.appendChild(video);
+        document.body.style.backgroundImage = "none";
+    } else {
+        document.body.style.backgroundImage = `url(${url})`;
+    }
+
+    localStorage.setItem("joseBackground", url);
+    localStorage.setItem("joseBackgroundType", isVideo ? "video" : "image");
+}
+
+function setPresetBackground(url) {
+    applyBackground(url, false);
+    closeBgModal();
+}
+
+
+picker.onchange = function() {
+    let file = this.files[0];
+    if (!file) return;
+
+    let url = URL.createObjectURL(file);
+    let isVideo = file.type.startsWith("video");
+    applyBackground(url, isVideo);
+};
+
+
+// LOAD SAVED BACKGROUND ON STARTUP (WITH SPACE AS DEFAULT)
+
+const defaultSpaceBg = "wallpapers/halloween.jpeg";
+
+let saved = localStorage.getItem("joseBackground") || defaultSpaceBg;
+let savedType = localStorage.getItem("joseBackgroundType") || "image";
+
+if (savedType === "video") {
+    applyBackground(saved, true);
+} else {
+    applyBackground(saved, false);
+}
+
+function loadAllGamesScript() {
+    const existingScript = document.getElementById('ugs-dynamic-script');
+    if (existingScript) {
+        existingScript.remove();
+    }
+    const script = document.createElement('script');
+    script.id = 'ugs-dynamic-script';
+    script.src = 'https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@latest/games.js';
+    document.body.appendChild(script);
+
+    setTimeout(setupSidebarJump, 1000);
+}
+
+// Function to handle clicking sidebar letters/numbers to jump to section
+function setupSidebarJump() {
+    const sidebarButtons = document.querySelectorAll(".ugs-sidebar-btn");
+    sidebarButtons.forEach(btn => {
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+
+        newBtn.addEventListener("click", () => {
+            const targetLetter = newBtn.textContent.trim().toUpperCase();
+            const headers = document.querySelectorAll(".ugs-letter-header");
+            const mainContainer = document.getElementById("ugsMainContent");
+
+            for (let header of headers) {
+                if (header.textContent.trim().toUpperCase().includes(targetLetter)) {
+                    if (mainContainer) {
+                        mainContainer.scrollTo({
+                            top: header.offsetTop - mainContainer.offsetTop,
+                            behavior: "smooth"
+                        });
+                    }
+                    break;
+                }
+            }
+        });
+    });
+}
+
+// Robust Search Filter function
+function performSearch() {
+    const searchInput = document.getElementById("searchInput");
+    if (!searchInput) return;
+    const query = searchInput.value.toLowerCase().trim();
+    const sectionsContainer = document.getElementById("sections-container");
+    if (!sectionsContainer) return;
+
+    const buttons = sectionsContainer.querySelectorAll(".ugs-btn");
+    const headers = sectionsContainer.querySelectorAll(".ugs-letter-header");
+
+    buttons.forEach(btn => {
+        const text = btn.textContent.toLowerCase();
+        if (text.includes(query) || query === "") {
+            btn.style.display = "";
+        } else {
+            btn.style.display = "none";
+        }
+    });
+
+    headers.forEach(header => {
+        let nextEl = header.nextElementSibling;
+        let hasVisible = false;
+        while (nextEl && !nextEl.classList.contains("ugs-letter-header")) {
+            if (nextEl.style.display !== "none") {
+                hasVisible = true;
+                break;
+            }
+            nextEl = nextEl.nextElementSibling;
+        }
+        if (query === "") {
+            header.style.display = "";
+        } else {
+            header.style.display = hasVisible ? "" : "none";
+        }
+    });
+}
+
+
+// LAUNCH IFRAME BROWSER VIEW
+function launchIframe(url) {
+    const homeView = document.getElementById("homeView");
+    const frameView = document.getElementById("frameView");
+    const appIframe = document.getElementById("appIframe");
+    const urlDisplay = document.getElementById("urlDisplay");
+
+    appIframe.src = url;
+    urlDisplay.textContent = "https://josephasn.com/search.html";
+
+    homeView.style.display = "none";
+    frameView.style.display = "flex";
+}
+
+// RETURN BACK TO NORMAL JOSEPHASN HOME
+function goHome() {
+    const homeView = document.getElementById("homeView");
+    const frameView = document.getElementById("frameView");
+    const appIframe = document.getElementById("appIframe");
+
+    appIframe.src = "about:blank"; // Unload iframe
+    frameView.style.display = "none";
+    homeView.style.display = "flex";
+
+    // Clear search bar input
+    const mainSearch = document.getElementById("mainSearch");
+    if (mainSearch) mainSearch.value = "";
+}
+
+
+// Attach live search listener & Enter key handler
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", performSearch);
+        searchInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                performSearch();
+                searchInput.blur();
+            }
+        });
+    }
+
+    // MAIN SEARCH BAR: Open iframe view on Enter key
+    const mainSearch = document.getElementById("mainSearch");
+    if (mainSearch) {
+        mainSearch.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && this.value.trim() !== "") {
+                launchIframe("gust.html");
+            }
+        });
+    }
+
+    const observer = new MutationObserver(() => {
+        setupSidebarJump();
+    });
+    const container = document.getElementById("sections-container");
+    if (container) {
+        observer.observe(container, { childList: true, subtree: true });
+    }
+});
+
+</script>
+
+
+
+</body>
+
+</html>
