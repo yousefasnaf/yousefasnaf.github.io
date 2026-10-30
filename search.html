@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search - josephasn.com</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Courier New", monospace;
+        background: #111;
+        color: white;
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    .top {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #searchBox {
+        width: 100%;
+        padding: 16px;
+        font-family: "Courier New", monospace;
+        font-size: 18px;
+        border: 2px solid white;
+        background: black;
+        color: white;
+        outline: none;
+    }
+
+    #searchBox:focus {
+        border-color: #aaa;
+    }
+
+    #status {
+        text-align: center;
+        margin: 20px 0;
+        color: #aaa;
+    }
+
+    #results {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .result {
+        border: 1px solid #444;
+        background: #181818;
+        padding: 15px;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+    .result:hover {
+        background: #292929;
+        border-color: white;
+        transform: translateX(3px);
+    }
+
+    .result-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .result-type {
+        font-size: 13px;
+        color: #888;
+        margin-top: 5px;
+    }
+
+    .no-results {
+        text-align: center;
+        color: #888;
+        padding: 40px;
+    }
+
+    #gameLoader {
+        display: none;
+    }
+
+    .back {
+        display: block;
+        width: fit-content;
+        margin: 0 auto 20px auto;
+        color: white;
+        text-decoration: none;
+        border: 1px solid #555;
+        padding: 8px 14px;
+    }
+
+    .back:hover {
+        background: white;
+        color: black;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="top">
+
+    <a href="index.html" class="back">← HOME</a>
+
+    <h1>SEARCH</h1>
+
+    <input
+        id="searchBox"
+        type="text"
+        placeholder="Search games, apps, YouTube..."
+        autocomplete="off"
+    >
+
+    <div id="status">
+        Loading games...
+    </div>
+
+    <div id="results"></div>
+
+</div>
+
+
+<!--
+    Hidden container.
+
+    games.js will create all of the games here.
+    We use the game names from these elements
+    to build our search database.
+-->
+<div id="gameLoader"></div>
+
+
+<script>
+
+let searchItems = [];
+
+
+// ==========================================
+// ADD AN ITEM TO THE SEARCH DATABASE
+// ==========================================
+
+function addSearchItem(name, type, action) {
+
+    if (!name) return;
+
+    name = name.trim();
+
+    if (!name) return;
+
+    searchItems.push({
+        name: name,
+        type: type,
+        action: action
+    });
+}
+
+
+// ==========================================
+// APPS
+// ==========================================
+
+addSearchItem(
+    "YouTube",
+    "App",
+    function() {
+        window.location.href = "apps/ty.html";
+    }
+);
+
+addSearchItem(
+    "Scratch",
+    "App",
+    function() {
+        window.location.href = "apps/scrattch.html";
+    }
+);
+
+
+// ==========================================
+// LOAD ALL GAMES
+// ==========================================
+
+function loadGames() {
+
+    const script = document.createElement("script");
+
+    script.src =
+        "https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@latest/games.js";
+
+    script.onload = function() {
+
+        /*
+            games.js creates the game list.
+
+            Give it a little time to finish creating
+            all the game buttons.
+        */
+
+        setTimeout(indexGames, 1500);
+
+    };
+
+    script.onerror = function() {
+
+        document.getElementById("status").textContent =
+            "Could not load games.";
+
+        renderResults();
+
+    };
+
+    document.body.appendChild(script);
+}
+
+
+// ==========================================
+// FIND ALL GAME BUTTONS
+// ==========================================
+
+function indexGames() {
+
+    const buttons = document.querySelectorAll(
+        "#gameLoader .ugs-btn"
+    );
+
+    /*
+        If games.js did not put the games inside
+        our container, try looking through the
+        entire document.
+    */
+
+    let gameButtons = buttons;
+
+    if (gameButtons.length === 0) {
+
+        gameButtons =
+            document.querySelectorAll(".ugs-btn");
+
+    }
+
+
+    gameButtons.forEach(function(button) {
+
+        let name = button.textContent.trim();
+
+        if (!name) return;
+
+
+        /*
+            Prevent duplicates.
+        */
+
+        const alreadyExists = searchItems.some(function(item) {
+
+            return item.type === "Game" &&
+                   item.name.toLowerCase() === name.toLowerCase();
+
+        });
+
+        if (alreadyExists) return;
+
+
+        addSearchItem(
+            name,
+            "Game",
+            function() {
+
+                /*
+                    Click the original game button.
+                    This keeps the original games.js
+                    behavior instead of trying to guess
+                    each game's URL.
+                */
+
+                button.click();
+
+            }
+        );
+
+    });
+
+
+    document.getElementById("status").textContent =
+        searchItems.length + " things available";
+
+    renderResults();
+}
+
+
+// ==========================================
+// SEARCH
+// ==========================================
+
+function performSearch() {
+
+    const query =
+        document.getElementById("searchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    /*
+        Show everything when search is empty.
+    */
+
+    let results;
+
+
+    if (query === "") {
+
+        results = searchItems;
+
+    } else {
+
+        /*
+            IMPORTANT:
+
+            includes() means:
+
+            "car"
+
+            can find:
+
+            "Cartoon"
+            "Car Game"
+            "Minecraft Cars"
+            "Race Cars"
+
+            Anything containing the searched text
+            will show.
+        */
+
+        results = searchItems.filter(function(item) {
+
+            return item.name
+                .toLowerCase()
+                .includes(query);
+
+        });
+
+    }
+
+
+    renderResults(results);
+}
+
+
+// ==========================================
+// DISPLAY RESULTS
+// ==========================================
+
+function renderResults(results = searchItems) {
+
+    const container =
+        document.getElementById("results");
+
+    container.innerHTML = "";
+
+
+    if (results.length === 0) {
+
+        container.innerHTML =
+            '<div class="no-results">No results found.</div>';
+
+        return;
+
+    }
+
+
+    results.forEach(function(item) {
+
+        const result =
+            document.createElement("div");
+
+        result.className = "result";
+
+
+        const title =
+            document.createElement("div");
+
+        title.className = "result-title";
+
+        title.textContent = item.name;
+
+
+        const type =
+            document.createElement("div");
+
+        type.className = "result-type";
+
+        type.textContent = item.type;
+
+
+        result.appendChild(title);
+        result.appendChild(type);
+
+
+        result.onclick = function() {
+
+            item.action();
+
+        };
+
+
+        container.appendChild(result);
+
+    });
+
+}
+
+
+// ==========================================
+// SEARCH AS YOU TYPE
+// ==========================================
+
+document
+    .getElementById("searchBox")
+    .addEventListener("input", performSearch);
+
+
+// ==========================================
+// ENTER KEY
+// ==========================================
+
+document
+    .getElementById("searchBox")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            performSearch();
+
+        }
+
+    });
+
+
+// ==========================================
+// START
+// ==========================================
+
+loadGames();
+
+</script>
+
+</body>
+</html>
