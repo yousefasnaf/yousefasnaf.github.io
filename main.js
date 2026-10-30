@@ -242,11 +242,12 @@ function goHome() {
 const search = document.getElementById("mainSearch");
 
         const placeholders = [
-            "Search anything josephasn.com!",
-            "Find all games and apps!",
-            "What are you looking for?",
-            "Have fun!",
-            "Find something cool!"
+            "search anything josephasn.com!",
+            "find all games and apps!",
+            "what are you looking for?",
+            "made at school lol",
+            "have fun!",
+            "find something cool!"
         ];
 
         let placeholderIndex = 0;
