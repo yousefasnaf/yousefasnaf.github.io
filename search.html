@@ -13,14 +13,13 @@
 
 body {
     margin: 0;
-    min-height: 100vh;
     background: #111;
     color: white;
     font-family: "Courier New", monospace;
+    min-height: 100vh;
 }
 
 #page {
-    width: 100%;
     max-width: 1000px;
     margin: auto;
     padding: 30px 20px;
@@ -32,7 +31,7 @@ body {
     text-decoration: none;
     border: 1px solid white;
     padding: 8px 14px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .back:hover {
@@ -42,39 +41,33 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
 }
 
 #searchBox {
     width: 100%;
-    height: 55px;
-    padding: 10px 15px;
+    padding: 15px;
+    font-family: "Courier New", monospace;
+    font-size: 18px;
     background: black;
     color: white;
     border: 2px solid white;
     outline: none;
-    font-family: "Courier New", monospace;
-    font-size: 18px;
-}
-
-#searchBox:focus {
-    border-color: #aaa;
 }
 
 #status {
     text-align: center;
-    margin: 20px 0;
     color: #aaa;
+    margin: 20px;
 }
 
 #results {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .result {
-    padding: 16px;
+    padding: 15px;
     background: #1b1b1b;
     border: 1px solid #444;
     cursor: pointer;
@@ -85,21 +78,50 @@ h1 {
     border-color: white;
 }
 
-.resultName {
+.name {
     font-size: 18px;
     font-weight: bold;
 }
 
-.resultType {
+.type {
     color: #888;
     font-size: 13px;
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
 .noResults {
     text-align: center;
-    padding: 40px;
     color: #888;
+    padding: 40px;
+}
+
+
+/* ==================================================
+   HIDDEN UGS CONTAINER
+   games.js needs these elements to exist
+   ================================================== */
+
+#ugsArea {
+    position: fixed;
+    left: -100000px;
+    top: -100000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+#sidebar {
+    display: none;
+}
+
+#ugsMainContent {
+    width: 1px;
+    height: 1px;
+}
+
+#sections-container {
+    width: 1px;
+    height: 1px;
 }
 </style>
 </head>
@@ -115,31 +137,52 @@ h1 {
     <input
         id="searchBox"
         type="text"
-        placeholder="Search anything..."
+        placeholder="Search games, apps, YouTube..."
         autocomplete="off"
     >
 
-    <div id="status">Loading...</div>
+    <div id="status">
+        Loading games...
+    </div>
 
     <div id="results"></div>
 
 </div>
 
 
+<!--
+======================================================
+UGS NEEDS THESE ELEMENTS
+======================================================
+-->
+
+<div id="ugsArea">
+
+    <div id="sidebar"></div>
+
+    <div id="ugsMainContent">
+
+        <div id="sections-container"></div>
+
+    </div>
+
+</div>
+
+
 <script>
 
-// ======================================================
+// =====================================================
 // SEARCH DATABASE
-// ======================================================
+// =====================================================
 
 let searchItems = [];
 
 
-// ======================================================
-// ADD SEARCH ITEM
-// ======================================================
+// =====================================================
+// ADD ITEM
+// =====================================================
 
-function addItem(name, type, url) {
+function addItem(name, type, action) {
 
     if (!name) return;
 
@@ -147,205 +190,118 @@ function addItem(name, type, url) {
 
     if (!name) return;
 
+    // Prevent duplicates
+    const exists = searchItems.some(function(item) {
+
+        return item.name.toLowerCase() ===
+               name.toLowerCase() &&
+               item.type === type;
+
+    });
+
+    if (exists) return;
+
     searchItems.push({
         name: name,
         type: type,
-        url: url
+        action: action
     });
 }
 
 
-// ======================================================
+// =====================================================
 // APPS
-// ======================================================
+// =====================================================
 
 addItem(
     "YouTube",
     "App",
-    "apps/ty.html"
+    function() {
+        window.location.href = "apps/ty.html";
+    }
 );
 
 addItem(
     "Scratch",
     "App",
-    "apps/scrattch.html"
+    function() {
+        window.location.href = "apps/scrattch.html";
+    }
 );
 
 
-// ======================================================
-// READ ?q= FROM URL
-// ======================================================
+// =====================================================
+// READ ?q=
+// =====================================================
 
-const params = new URLSearchParams(window.location.search);
+const params =
+    new URLSearchParams(window.location.search);
 
-const urlSearch = params.get("q");
+const startingQuery =
+    params.get("q");
 
-const searchBox = document.getElementById("searchBox");
+const searchBox =
+    document.getElementById("searchBox");
 
-if (urlSearch !== null) {
+if (startingQuery !== null) {
 
-    searchBox.value = urlSearch;
+    searchBox.value = startingQuery;
 
 }
 
 
-// ======================================================
-// LOAD THE MAIN PAGE IN THE BACKGROUND
-// ======================================================
+// =====================================================
+// FIND GAMES AFTER games.js LOADS
+// =====================================================
 
-function loadGamesFromMainPage() {
+function collectGames() {
 
-    fetch("index.html")
+    const container =
+        document.getElementById("sections-container");
 
-        .then(function(response) {
+    if (!container) return;
 
-            if (!response.ok) {
-                throw new Error("Could not load index.html");
+
+    const buttons =
+        container.querySelectorAll(".ugs-btn");
+
+
+    console.log(
+        "UGS buttons found:",
+        buttons.length
+    );
+
+
+    buttons.forEach(function(button) {
+
+        const name =
+            button.textContent.trim();
+
+        if (!name) return;
+
+
+        addItem(
+            name,
+            "Game",
+            function() {
+
+                /*
+                    Click the REAL UGS button.
+
+                    This means we don't have to guess
+                    the URL of the game.
+                */
+
+                button.click();
+
             }
-
-            return response.text();
-
-        })
-
-        .then(function(html) {
-
-            /*
-                Create a temporary HTML document.
-
-                We are NOT executing index.html.
-
-                We are only reading the game buttons
-                that are already written into the page.
-            */
-
-            const parser = new DOMParser();
-
-            const doc = parser.parseFromString(
-                html,
-                "text/html"
-            );
-
-
-            // ==========================================
-            // FIND GAME BUTTONS
-            // ==========================================
-
-            const buttons =
-                doc.querySelectorAll(".ugs-btn");
-
-
-            buttons.forEach(function(button) {
-
-                const name =
-                    button.textContent.trim();
-
-                if (!name) return;
-
-
-                /*
-                    Get the game's onclick.
-
-                    Your UGS buttons normally contain
-                    the code that opens the game.
-                */
-
-                const onclick =
-                    button.getAttribute("onclick");
-
-
-                let url = null;
-
-
-                /*
-                    Try to find a URL inside onclick.
-                */
-
-                if (onclick) {
-
-                    const match =
-                        onclick.match(
-                            /['"]([^'"]+)['"]/
-                        );
-
-                    if (match) {
-                        url = match[1];
-                    }
-
-                }
-
-
-                /*
-                    If we cannot find a URL, still add
-                    the game to search results.
-
-                    Clicking it will try to find it
-                    on the homepage.
-                */
-
-                addItem(
-                    name,
-                    "Game",
-                    url
-                );
-
-            });
-
-
-            finishLoading();
-
-        })
-
-        .catch(function(error) {
-
-            console.error(error);
-
-            document.getElementById("status").textContent =
-                "Could not load games.";
-
-            renderResults();
-
-        });
-
-}
-
-
-// ======================================================
-// FINISH LOADING
-// ======================================================
-
-function finishLoading() {
-
-    /*
-        Remove duplicates.
-    */
-
-    const unique = [];
-
-    const seen = new Set();
-
-
-    searchItems.forEach(function(item) {
-
-        const key =
-            item.type + "|" +
-            item.name.toLowerCase();
-
-        if (!seen.has(key)) {
-
-            seen.add(key);
-
-            unique.push(item);
-
-        }
+        );
 
     });
 
 
-    searchItems = unique;
-
-
     document.getElementById("status").textContent =
-        searchItems.length + " results available";
+        searchItems.length + " things available";
 
 
     performSearch();
@@ -353,9 +309,50 @@ function finishLoading() {
 }
 
 
-// ======================================================
+// =====================================================
+// LOAD UGS games.js
+// =====================================================
+
+const ugsScript =
+    document.createElement("script");
+
+ugsScript.src =
+    "https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@latest/games.js";
+
+
+ugsScript.onload = function() {
+
+    console.log("UGS games.js loaded");
+
+
+    /*
+        games.js builds the buttons after loading,
+        so wait a little before collecting them.
+    */
+
+    setTimeout(function() {
+
+        collectGames();
+
+    }, 1500);
+
+};
+
+
+ugsScript.onerror = function() {
+
+    document.getElementById("status").textContent =
+        "Failed to load games.";
+
+};
+
+
+document.body.appendChild(ugsScript);
+
+
+// =====================================================
 // SEARCH
-// ======================================================
+// =====================================================
 
 function performSearch() {
 
@@ -374,13 +371,14 @@ function performSearch() {
 
     } else {
 
-        results = searchItems.filter(function(item) {
+        results =
+            searchItems.filter(function(item) {
 
-            return item.name
-                .toLowerCase()
-                .includes(query);
+                return item.name
+                    .toLowerCase()
+                    .includes(query);
 
-        });
+            });
 
     }
 
@@ -390,22 +388,24 @@ function performSearch() {
 }
 
 
-// ======================================================
-// SHOW RESULTS
-// ======================================================
+// =====================================================
+// DISPLAY RESULTS
+// =====================================================
 
 function renderResults(results) {
 
-    const container =
+    const resultsBox =
         document.getElementById("results");
 
-    container.innerHTML = "";
+    resultsBox.innerHTML = "";
 
 
-    if (!results || results.length === 0) {
+    if (results.length === 0) {
 
-        container.innerHTML =
-            '<div class="noResults">No results found.</div>';
+        resultsBox.innerHTML =
+            '<div class="noResults">' +
+            'No results found.' +
+            '</div>';
 
         return;
 
@@ -423,7 +423,7 @@ function renderResults(results) {
         const name =
             document.createElement("div");
 
-        name.className = "resultName";
+        name.className = "name";
 
         name.textContent = item.name;
 
@@ -431,7 +431,7 @@ function renderResults(results) {
         const type =
             document.createElement("div");
 
-        type.className = "resultType";
+        type.className = "type";
 
         type.textContent = item.type;
 
@@ -445,81 +445,34 @@ function renderResults(results) {
             "click",
             function() {
 
-                openResult(item);
+                item.action();
 
             }
         );
 
 
-        container.appendChild(result);
+        resultsBox.appendChild(result);
 
     });
 
 }
 
 
-// ======================================================
-// OPEN RESULT
-// ======================================================
-
-function openResult(item) {
-
-    /*
-        Apps have normal URLs.
-    */
-
-    if (item.type === "App" && item.url) {
-
-        window.location.href = item.url;
-
-        return;
-
-    }
-
-
-    /*
-        If the game has a URL, open it.
-    */
-
-    if (item.url) {
-
-        window.location.href = item.url;
-
-        return;
-
-    }
-
-
-    /*
-        If we don't know the game's URL,
-        send the user to the games section.
-    */
-
-    window.location.href =
-        "index.html#games";
-
-}
-
-
-// ======================================================
+// =====================================================
 // LIVE SEARCH
-// ======================================================
+// =====================================================
 
 searchBox.addEventListener(
     "input",
     function() {
 
-        /*
-            Update the URL while searching.
-
-            Example:
-
-            search.html?q=minecraft
-        */
-
         const value =
             searchBox.value.trim();
 
+
+        /*
+            Keep ?q= updated.
+        */
 
         if (value !== "") {
 
@@ -547,15 +500,15 @@ searchBox.addEventListener(
 );
 
 
-// ======================================================
+// =====================================================
 // ENTER
-// ======================================================
+// =====================================================
 
 searchBox.addEventListener(
     "keydown",
-    function(event) {
+    function(e) {
 
-        if (event.key === "Enter") {
+        if (e.key === "Enter") {
 
             performSearch();
 
@@ -563,13 +516,6 @@ searchBox.addEventListener(
 
     }
 );
-
-
-// ======================================================
-// START
-// ======================================================
-
-loadGamesFromMainPage();
 
 </script>
 
