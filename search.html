@@ -183,6 +183,98 @@ function addSearchButton(name, type, action) {
 
 
 /* ==================================================
+   OPEN GAME IN ABOUT:BLANK
+================================================== */
+
+function openGameBlank(gameURL) {
+
+    /*
+        Open a completely blank tab.
+
+        Because this function is called directly
+        from the button click, the browser should
+        allow the new tab.
+    */
+
+    const blankWindow = window.open(
+        "about:blank",
+        "_blank"
+    );
+
+
+    if (!blankWindow) {
+
+        alert(
+            "Your browser blocked the new tab. " +
+            "Please allow pop-ups for josephasn.com."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Put the game inside the blank page.
+
+        The address bar stays:
+
+        about:blank
+    */
+
+    blankWindow.document.open();
+
+    blankWindow.document.write(`
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>Game</title>
+
+            <style>
+
+                html,
+                body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    background: black;
+                }
+
+                iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: 0;
+                    display: block;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <iframe
+                src="${gameURL.replace(/"/g, "&quot;")}"
+                allowfullscreen
+                allow="autoplay; fullscreen; gamepad"
+            ></iframe>
+
+        </body>
+
+        </html>
+    `);
+
+    blankWindow.document.close();
+
+}
+
+
+/* ==================================================
    YOUTUBE
 ================================================== */
 
@@ -191,7 +283,8 @@ addSearchButton(
     "App",
     function() {
 
-        window.location.href = "apps/ty.html";
+        window.location.href =
+            "apps/ty.html";
 
     }
 );
@@ -206,7 +299,8 @@ addSearchButton(
     "App",
     function() {
 
-        window.location.href = "apps/scrattch.html";
+        window.location.href =
+            "apps/scrattch.html";
 
     }
 );
@@ -218,32 +312,24 @@ addSearchButton(
 
 function loadUGSGames() {
 
-    /*
-        games.js creates this array:
-
-        let files = [
-            "cl1",
-            "cl100RoomsOfEnemies",
-            "cl2048",
-            ...
-        ];
-
-        We use that exact list.
-    */
-
     if (typeof files === "undefined") {
 
         document.getElementById("status").textContent =
             "Could not load games.";
 
-        console.error("UGS files array was not found.");
+        console.error(
+            "UGS files array was not found."
+        );
 
         return;
 
     }
 
 
-    console.log("UGS games found:", files.length);
+    console.log(
+        "UGS games found:",
+        files.length
+    );
 
 
     files.forEach(function(file) {
@@ -253,12 +339,6 @@ function loadUGSGames() {
 
         /*
             Remove the UGS "cl" prefix.
-
-            Example:
-
-            clcrazycars
-            ↓
-            crazycars
         */
 
         let gameName = file;
@@ -268,22 +348,14 @@ function loadUGSGames() {
         }
 
 
-        /*
-            Make the name easier to read.
-
-            crazycars
-            ↓
-            Crazycars
-
-            clA Walk in The Forest
-            ↓
-            A Walk in The Forest
-        */
-
         gameName = gameName.trim();
 
         if (!gameName) return;
 
+
+        /*
+            Create the search result.
+        */
 
         addSearchButton(
 
@@ -294,11 +366,7 @@ function loadUGSGames() {
             function() {
 
                 /*
-                    Open the REAL UGS game.
-
-                    We keep the original filename
-                    so games with spaces, capitals,
-                    numbers, etc. still work.
+                    REAL UGS GAME URL
                 */
 
                 const gameURL =
@@ -307,7 +375,11 @@ function loadUGSGames() {
                     ".html";
 
 
-                window.location.href = gameURL;
+                /*
+                    OPEN IT INSIDE ABOUT:BLANK
+                */
+
+                openGameBlank(gameURL);
 
             }
 
@@ -317,7 +389,8 @@ function loadUGSGames() {
 
 
     document.getElementById("status").textContent =
-        searchItems.length + " things available";
+        searchItems.length +
+        " things available";
 
 
     performSearch();
@@ -334,6 +407,7 @@ function performSearch() {
     const searchBox =
         document.getElementById("searchBox");
 
+
     const query =
         searchBox.value
             .toLowerCase()
@@ -349,27 +423,14 @@ function performSearch() {
 
     } else {
 
-        /*
-            PARTIAL SEARCH
+        results =
+            searchItems.filter(function(item) {
 
-            car
+                return item.name
+                    .toLowerCase()
+                    .includes(query);
 
-            finds:
-
-            crazycars
-            carcrash3
-            carmods
-            carstuntsdriving
-            etc.
-        */
-
-        results = searchItems.filter(function(item) {
-
-            return item.name
-                .toLowerCase()
-                .includes(query);
-
-        });
+            });
 
     }
 
@@ -392,7 +453,10 @@ function renderResults(results) {
     container.innerHTML = "";
 
 
-    if (!results || results.length === 0) {
+    if (
+        !results ||
+        results.length === 0
+    ) {
 
         container.innerHTML =
             '<div class="noResults">' +
@@ -407,32 +471,36 @@ function renderResults(results) {
     results.forEach(function(item) {
 
 
-        /*
-            EVERY result uses the exact
-            same button structure.
-        */
-
         const button =
             document.createElement("button");
 
 
-        button.className = "result";
+        button.className =
+            "result";
 
 
         const name =
             document.createElement("div");
 
-        name.className = "resultName";
 
-        name.textContent = item.name;
+        name.className =
+            "resultName";
+
+
+        name.textContent =
+            item.name;
 
 
         const type =
             document.createElement("div");
 
-        type.className = "resultType";
 
-        type.textContent = item.type;
+        type.className =
+            "resultType";
+
+
+        type.textContent =
+            item.type;
 
 
         button.appendChild(name);
@@ -470,14 +538,6 @@ document
             const value =
                 this.value.trim();
 
-
-            /*
-                Keep the URL updated.
-
-                Example:
-
-                search.html?q=car
-            */
 
             if (value !== "") {
 
