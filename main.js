@@ -260,7 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.key === "Enter" && this.value.trim() !== "") {
                 window.location.href = "search.html?q=" + encodeURIComponent(this.value.trim());
             }
-            }
         });
     }
 
