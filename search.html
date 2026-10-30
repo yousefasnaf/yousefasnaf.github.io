@@ -188,88 +188,178 @@ function addSearchButton(name, type, action) {
 
 function openGameBlank(gameURL) {
 
-    /*
-        Open a completely blank tab.
-
-        Because this function is called directly
-        from the button click, the browser should
-        allow the new tab.
-    */
-
-    const blankWindow = window.open(
-        "about:blank",
-        "_blank"
-    );
-
+    // Open about:blank immediately from the button click
+    const blankWindow = window.open("about:blank", "_blank");
 
     if (!blankWindow) {
-
         alert(
             "Your browser blocked the new tab. " +
             "Please allow pop-ups for josephasn.com."
         );
-
         return;
-
     }
 
-
-    /*
-        Put the game inside the blank page.
-
-        The address bar stays:
-
-        about:blank
-    */
-
+    // Show a loading message while we get the game
     blankWindow.document.open();
-
     blankWindow.document.write(`
         <!DOCTYPE html>
-
         <html>
-
         <head>
-
-            <title>Game</title>
-
+            <title>Loading Game...</title>
             <style>
-
-                html,
-                body {
+                html, body {
                     margin: 0;
-                    padding: 0;
                     width: 100%;
                     height: 100%;
-                    overflow: hidden;
                     background: black;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: Arial, sans-serif;
                 }
-
-                iframe {
-                    width: 100%;
-                    height: 100%;
-                    border: 0;
-                    display: block;
-                }
-
             </style>
-
         </head>
-
         <body>
-
-            <iframe
-                src="${gameURL.replace(/"/g, "&quot;")}"
-                allowfullscreen
-                allow="autoplay; fullscreen; gamepad"
-            ></iframe>
-
+            Loading game...
         </body>
-
         </html>
     `);
-
     blankWindow.document.close();
+
+
+    // Get the REAL HTML code of the game
+    fetch(gameURL)
+        .then(function(response) {
+
+            if (!response.ok) {
+                throw new Error(
+                    "Game returned HTTP " + response.status
+                );
+            }
+
+            return response.text();
+
+        })
+
+        .then(function(html) {
+
+            /*
+                The game may use relative files like:
+
+                ./game.js
+                images/player.png
+                style.css
+
+                Since we're running it from about:blank,
+                we add a <base> tag so those files still
+                load from the game's original location.
+            */
+
+            const gameDirectory =
+                gameURL.substring(
+                    0,
+                    gameURL.lastIndexOf("/") + 1
+                );
+
+
+            const baseTag =
+                '<base href="' +
+                gameDirectory.replace(/"/g, "&quot;") +
+                '">';
+
+
+            /*
+                Put the base tag inside <head>.
+            */
+
+            if (
+                html.toLowerCase().includes("<head>")
+            ) {
+
+                html = html.replace(
+                    /<head>/i,
+                    "<head>" + baseTag
+                );
+
+            } else {
+
+                html =
+                    "<head>" +
+                    baseTag +
+                    "</head>" +
+                    html;
+
+            }
+
+
+            /*
+                THIS IS THE IMPORTANT PART.
+
+                The fetched HTML is written directly
+                into the about:blank document.
+
+                It is NOT displayed as text.
+
+                The browser parses it as a real HTML page,
+                so its <script>, <style>, <canvas>, etc.
+                actually run.
+            */
+
+            blankWindow.document.open();
+
+            blankWindow.document.write(html);
+
+            blankWindow.document.close();
+
+        })
+
+        .catch(function(error) {
+
+            console.error(
+                "Could not load game:",
+                error
+            );
+
+
+            blankWindow.document.open();
+
+            blankWindow.document.write(`
+                <!DOCTYPE html>
+
+                <html>
+
+                <head>
+                    <title>Game Error</title>
+                </head>
+
+                <body style="
+                    margin:0;
+                    background:#111;
+                    color:white;
+                    font-family:monospace;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    height:100vh;
+                    text-align:center;
+                ">
+
+                    <div>
+                        <h2>Could not load game</h2>
+                        <p>${String(error.message)
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")}</p>
+                    </div>
+
+                </body>
+
+                </html>
+            `);
+
+            blankWindow.document.close();
+
+        });
 
 }
 
