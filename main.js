@@ -258,7 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mainSearch) {
         mainSearch.addEventListener("keydown", function(e) {
             if (e.key === "Enter" && this.value.trim() !== "") {
-                launchIframe("gust.html");
+                window.location.href = "search.html?q=" + encodeURIComponent(this.value.trim());
+            }
             }
         });
     }
