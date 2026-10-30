@@ -247,6 +247,7 @@ const search = document.getElementById("mainSearch");
             "what are you looking for?",
             "made at school lol.",
             "have fun!",
+            "best website i know.",
             "find something cool!"
         ];
 
