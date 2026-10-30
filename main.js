@@ -239,6 +239,23 @@ function goHome() {
     if (mainSearch) mainSearch.value = "";
 }
 
+const search = document.getElementById("mainSearch");
+
+        const placeholders = [
+            "Search anything josephasn.com!",
+            "Find all games and apps!",
+            "What are you looking for?",
+            "Have fun!",
+            "Find something cool!"
+        ];
+
+        let placeholderIndex = 0;
+
+        setInterval(() => {
+            placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+            search.placeholder = placeholders[placeholderIndex];
+        }, 15000);
+
 
 // Attach live search listener & Enter key handler
 document.addEventListener("DOMContentLoaded", () => {
