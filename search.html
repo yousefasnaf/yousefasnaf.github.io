@@ -111,31 +111,11 @@ h1 {
     color: #888;
 }
 
-
-/*
-==================================================
-HIDDEN HOMEPAGE
-==================================================
-*/
-
-#hiddenFrame {
-    position: fixed;
-
-    left: -10000px;
-    top: -10000px;
-
-    width: 1200px;
-    height: 1000px;
-
-    border: 0;
-}
-
 </style>
 
 </head>
 
 <body>
-
 
 <div id="page">
 
@@ -161,34 +141,20 @@ HIDDEN HOMEPAGE
 </div>
 
 
-<!--
-    This loads your REAL homepage.
-
-    games.js will run exactly like it does
-    on your normal website.
--->
-
-<iframe
-    id="hiddenFrame"
-    src="index.html">
-</iframe>
+<!-- UGS GAME CATALOG -->
+<script src="https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/games.js"></script>
 
 
 <script>
 
-
-// ==================================================
-// SEARCH DATA
-// ==================================================
-
 let searchItems = [];
 
 
-// ==================================================
-// ADD BUTTON
-// ==================================================
+/* ==================================================
+   ADD SEARCH ITEM
+================================================== */
 
-function addSearchButton(name, type, clickFunction) {
+function addSearchButton(name, type, action) {
 
     if (!name) return;
 
@@ -196,136 +162,128 @@ function addSearchButton(name, type, clickFunction) {
 
     if (!name) return;
 
-
-    // Don't add duplicates
-
     const exists = searchItems.some(function(item) {
 
         return (
-            item.name.toLowerCase() === name.toLowerCase()
-            &&
+            item.name.toLowerCase() === name.toLowerCase() &&
             item.type === type
         );
 
     });
 
-
     if (exists) return;
 
-
     searchItems.push({
-
         name: name,
-
         type: type,
-
-        action: clickFunction
-
+        action: action
     });
 
 }
 
 
-// ==================================================
-// YOUTUBE
-// ==================================================
+/* ==================================================
+   YOUTUBE
+================================================== */
 
 addSearchButton(
-
     "YouTube",
-
     "App",
-
     function() {
 
-        window.location.href =
-            "apps/ty.html";
+        window.location.href = "apps/ty.html";
 
     }
-
 );
 
 
-// ==================================================
-// SCRATCH
-// ==================================================
+/* ==================================================
+   SCRATCH
+================================================== */
 
 addSearchButton(
-
     "Scratch",
-
     "App",
-
     function() {
 
-        window.location.href =
-            "apps/scrattch.html";
+        window.location.href = "apps/scrattch.html";
 
     }
-
 );
 
 
-// ==================================================
-// GET ALL GAMES FROM HOMEPAGE
-// ==================================================
+/* ==================================================
+   UGS GAMES
+================================================== */
 
-function getGames() {
+function loadUGSGames() {
 
+    /*
+        games.js creates this array:
 
-    const iframe =
-        document.getElementById("hiddenFrame");
+        let files = [
+            "cl1",
+            "cl100RoomsOfEnemies",
+            "cl2048",
+            ...
+        ];
 
+        We use that exact list.
+    */
 
-    const iframeWindow =
-        iframe.contentWindow;
+    if (typeof files === "undefined") {
 
+        document.getElementById("status").textContent =
+            "Could not load games.";
 
-    const iframeDocument =
-        iframe.contentDocument ||
-        iframeWindow.document;
-
-
-    if (!iframeDocument) {
+        console.error("UGS files array was not found.");
 
         return;
 
     }
 
 
-    /*
-        Find EVERY UGS game button.
-    */
-
-    const gameButtons =
-        iframeDocument.querySelectorAll(
-            ".ugs-btn"
-        );
+    console.log("UGS games found:", files.length);
 
 
-    console.log(
-        "Games found:",
-        gameButtons.length
-    );
+    files.forEach(function(file) {
 
-
-    gameButtons.forEach(function(originalButton) {
-
-
-        const gameName =
-            originalButton.textContent.trim();
-
-
-        if (!gameName) return;
+        if (!file) return;
 
 
         /*
-            Create our own search button.
+            Remove the UGS "cl" prefix.
 
-            When clicked, it clicks the
-            ORIGINAL game button inside
-            the hidden homepage.
+            Example:
+
+            clcrazycars
+            ↓
+            crazycars
         */
+
+        let gameName = file;
+
+        if (gameName.startsWith("cl")) {
+            gameName = gameName.substring(2);
+        }
+
+
+        /*
+            Make the name easier to read.
+
+            crazycars
+            ↓
+            Crazycars
+
+            clA Walk in The Forest
+            ↓
+            A Walk in The Forest
+        */
+
+        gameName = gameName.trim();
+
+        if (!gameName) return;
+
 
         addSearchButton(
 
@@ -335,7 +293,21 @@ function getGames() {
 
             function() {
 
-                originalButton.click();
+                /*
+                    Open the REAL UGS game.
+
+                    We keep the original filename
+                    so games with spaces, capitals,
+                    numbers, etc. still work.
+                */
+
+                const gameURL =
+                    "https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/UGS-Files/" +
+                    encodeURIComponent(file) +
+                    ".html";
+
+
+                window.location.href = gameURL;
 
             }
 
@@ -344,11 +316,8 @@ function getGames() {
     });
 
 
-    document.getElementById(
-        "status"
-    ).textContent =
-        searchItems.length +
-        " things available";
+    document.getElementById("status").textContent =
+        searchItems.length + " things available";
 
 
     performSearch();
@@ -356,110 +325,17 @@ function getGames() {
 }
 
 
-// ==================================================
-// WAIT FOR GAMES
-// ==================================================
-
-let attempts = 0;
-
-
-function waitForGames() {
-
-
-    attempts++;
-
-
-    const iframe =
-        document.getElementById(
-            "hiddenFrame"
-        );
-
-
-    let doc;
-
-
-    try {
-
-        doc =
-            iframe.contentDocument ||
-            iframe.contentWindow.document;
-
-    } catch (error) {
-
-        console.error(error);
-
-        return;
-
-    }
-
-
-    const buttons =
-        doc.querySelectorAll(
-            ".ugs-btn"
-        );
-
-
-    /*
-        If games haven't loaded yet,
-        try again.
-    */
-
-    if (
-        buttons.length === 0
-        &&
-        attempts < 30
-    ) {
-
-        setTimeout(
-            waitForGames,
-            1000
-        );
-
-        return;
-
-    }
-
-
-    getGames();
-
-}
-
-
-// ==================================================
-// IFRAME LOADED
-// ==================================================
-
-document
-    .getElementById("hiddenFrame")
-    .addEventListener(
-        "load",
-        function() {
-
-            /*
-                Give games.js time to create
-                all the games.
-            */
-
-            setTimeout(
-                waitForGames,
-                1000
-            );
-
-        }
-    );
-
-
-// ==================================================
-// SEARCH
-// ==================================================
+/* ==================================================
+   SEARCH
+================================================== */
 
 function performSearch() {
 
+    const searchBox =
+        document.getElementById("searchBox");
 
     const query =
-        document
-            .getElementById("searchBox")
-            .value
+        searchBox.value
             .toLowerCase()
             .trim();
 
@@ -469,34 +345,31 @@ function performSearch() {
 
     if (query === "") {
 
-        results =
-            searchItems;
+        results = searchItems;
 
     } else {
 
         /*
-            THIS is what makes partial searching work.
+            PARTIAL SEARCH
 
             car
 
-            can find:
+            finds:
 
-            Cars
-            Cartoon
-            Racing Car
-            Car Game
+            crazycars
+            carcrash3
+            carmods
+            carstuntsdriving
+            etc.
         */
 
-        results =
-            searchItems.filter(
-                function(item) {
+        results = searchItems.filter(function(item) {
 
-                    return item.name
-                        .toLowerCase()
-                        .includes(query);
+            return item.name
+                .toLowerCase()
+                .includes(query);
 
-                }
-            );
+        });
 
     }
 
@@ -506,26 +379,20 @@ function performSearch() {
 }
 
 
-// ==================================================
-// CREATE SEARCH BUTTONS
-// ==================================================
+/* ==================================================
+   CREATE RESULT BUTTONS
+================================================== */
 
 function renderResults(results) {
 
-
     const container =
-        document.getElementById(
-            "results"
-        );
+        document.getElementById("results");
 
 
     container.innerHTML = "";
 
 
-    if (
-        !results ||
-        results.length === 0
-    ) {
+    if (!results || results.length === 0) {
 
         container.innerHTML =
             '<div class="noResults">' +
@@ -537,81 +404,62 @@ function renderResults(results) {
     }
 
 
-    results.forEach(
-        function(item) {
+    results.forEach(function(item) {
 
 
-            /*
-                THIS is the exact same type
-                of button for every result.
-            */
+        /*
+            EVERY result uses the exact
+            same button structure.
+        */
 
-            const button =
-                document.createElement(
-                    "button"
-                );
+        const button =
+            document.createElement("button");
 
 
-            button.className =
-                "result";
+        button.className = "result";
 
 
-            const name =
-                document.createElement(
-                    "div"
-                );
+        const name =
+            document.createElement("div");
+
+        name.className = "resultName";
+
+        name.textContent = item.name;
 
 
-            name.className =
-                "resultName";
+        const type =
+            document.createElement("div");
+
+        type.className = "resultType";
+
+        type.textContent = item.type;
 
 
-            name.textContent =
-                item.name;
+        button.appendChild(name);
+
+        button.appendChild(type);
 
 
-            const type =
-                document.createElement(
-                    "div"
-                );
+        button.addEventListener(
+            "click",
+            function() {
+
+                item.action();
+
+            }
+        );
 
 
-            type.className =
-                "resultType";
+        container.appendChild(button);
 
-
-            type.textContent =
-                item.type;
-
-
-            button.appendChild(name);
-
-            button.appendChild(type);
-
-
-            button.addEventListener(
-                "click",
-                function() {
-
-                    item.action();
-
-                }
-            );
-
-
-            container.appendChild(
-                button
-            );
-
-        }
-    );
+    });
 
 }
 
 
-// ==================================================
-// LIVE SEARCH
-// ==================================================
+/* ==================================================
+   LIVE SEARCH
+================================================== */
 
 document
     .getElementById("searchBox")
@@ -619,40 +467,33 @@ document
         "input",
         function() {
 
-
             const value =
                 this.value.trim();
 
 
             /*
-                Keep ?q= updated.
+                Keep the URL updated.
+
+                Example:
+
+                search.html?q=car
             */
 
             if (value !== "") {
 
                 history.replaceState(
-
                     null,
-
                     "",
-
                     "search.html?q=" +
-                    encodeURIComponent(
-                        value
-                    )
-
+                    encodeURIComponent(value)
                 );
 
             } else {
 
                 history.replaceState(
-
                     null,
-
                     "",
-
                     "search.html"
-
                 );
 
             }
@@ -664,9 +505,9 @@ document
     );
 
 
-// ==================================================
-// ENTER
-// ==================================================
+/* ==================================================
+   ENTER
+================================================== */
 
 document
     .getElementById("searchBox")
@@ -684,9 +525,9 @@ document
     );
 
 
-// ==================================================
-// READ ?q=
-// ==================================================
+/* ==================================================
+   READ ?q=
+================================================== */
 
 const params =
     new URLSearchParams(
@@ -705,6 +546,13 @@ if (startingQuery !== null) {
     ).value = startingQuery;
 
 }
+
+
+/* ==================================================
+   START
+================================================== */
+
+loadUGSGames();
 
 </script>
 
