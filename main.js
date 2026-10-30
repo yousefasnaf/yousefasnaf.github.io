@@ -245,7 +245,7 @@ const search = document.getElementById("mainSearch");
             "search anything josephasn.com!",
             "find all games and apps!",
             "what are you looking for?",
-            "made at school lol!",
+            "made at school lol.",
             "have fun!",
             "find something cool!"
         ];
